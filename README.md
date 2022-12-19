@@ -9,3 +9,6 @@ Ostale datoteke so avtomatsko generirane in vsebujejo uporabljene knjižnice;
 
 Terms:
 Header file: tip datoteke, ki ga lahko definiramo znotraj druge .cpp/.h datoteke in v drugi datoteki kličemo funkcije oz spremenljivke, ki jih ta file vsebije, če imajo predpono extern (lit. external)
+
+Še ne dela ko ugotavljam katere datoteke so pomembne in katere ne
+
