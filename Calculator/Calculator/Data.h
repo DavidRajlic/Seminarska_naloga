@@ -2,19 +2,62 @@
 #define DATA_H	//Če ni ga definira
 #include "string";
 #include "regex";
+#include "NumConversion.h";
+#include "LogicalOperations.h"
 
 extern void execute(std::string& currentDisplay);
 void powerconvert(std::string& givenString);
 int powerCheck(std::string& givenString, int pos);
 void compile(std::string& givenString);
+void checkType(std::string& givenString);
 
 extern std::string currentDisplay = " ";
 
-extern void execute(std::string &currentDisplayGiven) { 
-    
-    compile(currentDisplay);
-    powerconvert(currentDisplay);
+extern int type = 0;
 
+// Type 0: Normal
+// Type 1: Conversion
+// Type 2: Logic
+
+extern void execute(std::string &currentDisplayGiven) { 
+    checkType(currentDisplayGiven);
+    
+    switch (type) {
+    case 0:
+        compile(currentDisplayGiven);
+        powerconvert(currentDisplayGiven);
+        break;
+    case 1:
+        numConvertControler(currentDisplayGiven);
+        break;
+    case 2:
+        currentDisplayGiven = "logic";
+        break;
+    }
+    
+
+}
+
+void checkType(std::string& givenString) {
+    if (givenString[0] == 'C' ||
+        givenString.substr(0, 3) == "BIN" ||
+        givenString.substr(0, 3) == "OCT" || 
+        givenString.substr(0, 3) == "DEC" || 
+        givenString.substr(0, 3) == "HEX") {
+        type = 1;
+    }
+    for (int i = 0; i < givenString.length(); i++) {
+        if (givenString.substr(i, 3) == "NOT" ||
+            givenString.substr(i, 3) == "AND" ||
+            givenString.substr(i, 4) == "NAND" ||
+            givenString.substr(i, 3) == "NOR" ||
+            givenString.substr(i, 2) == "OR" ||
+            givenString.substr(i, 3) == "XOR" ||
+            givenString.substr(i, 5) == "IMPLY" ||
+            givenString.substr(i, 4) == "XNOR") {
+            type = 2;
+        }
+    }
 }
 
 void compile(std::string &givenString) {
@@ -115,6 +158,57 @@ extern void deleteOne (std::string &currentDisplayGiven) {
     }
 }
 
+extern std::string convertFrom = "";
+extern std::string convertTo = "";
+extern std::string convertInput = "";
 
+extern void convert() {
+    int isStandard = true;
+    for (int i = 2; i < convertFrom.length(); i++) {
+        int temp = convertFrom[i];
+        if (temp < 65 || temp > 90) {
+            isStandard = false;
+        }
+    }
+    if (convertFrom.length() > 3 && isStandard == false) {
+        convertFrom.erase(1, 1);
+    }
+    else if (isStandard == true) {
+        convertFrom.erase(0, 2);
+    }
+    isStandard = true;
+    for (int i = 2; i < convertTo.length(); i++) {
+        int temp = convertTo[i];
+        if (temp < 65 || temp > 90) {
+            isStandard = false;
+        }
+    }
+    if (convertTo.length() > 3 && isStandard == false) {
+        convertTo.erase(1, 1);
+    }
+    else if (isStandard == true) {
+        convertTo.erase(0, 2);
+    }
+    
+    currentDisplay = convertFrom + " " + convertInput + " " + convertTo;
+};
+
+extern void deleteOneLogic(std::string &currentDisplayGiven) {
+    if (currentDisplayGiven.length() < 2) {
+        return;
+    }
+    if (currentDisplayGiven[currentDisplayGiven.length() - 1] == ' ') {
+        currentDisplayGiven.pop_back();
+        while (currentDisplay[currentDisplayGiven.length() - 1] + 0 > 57) {
+            currentDisplayGiven.pop_back();
+        }
+        if (currentDisplayGiven[currentDisplayGiven.length() - 1] == ' ') {
+            currentDisplayGiven.pop_back();
+        }
+    }
+    else {
+        currentDisplayGiven.pop_back();
+    }
+}
 #endif	//Zaključek if stavka
 
