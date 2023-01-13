@@ -13,11 +13,11 @@ int izracun_ostanka();
 int potenciranje();
 int korenjenje();
 double calculate_equation(string equation);
-double eval(const std::string& expr) {
-    std::stack<double> nums;
-    std::stack<char> ops;
+double eval(const string& expr) {
+    stack<double> nums;
+    stack<char> ops;
 
-    for (std::size_t i = 0; i < expr.size(); i++) {
+    for (size_t i = 0; i < expr.size(); i++) {
         char c = expr[i];
         
 				
@@ -25,10 +25,10 @@ double eval(const std::string& expr) {
         if(c == ' ') continue;
 				// če je število 
         if (c >= '0' && c <= '9') {
-            std::string num;
+            string num;
             while (i < expr.size() && (expr[i] >= '0' && expr[i] <= '9'))
                 num += expr[i++];
-            nums.push(std::stod(num));
+            nums.push(stod(num));
             i--;
         } else if (c == '+' || c == '-' || c == '*' || c == '/') {
             while (!ops.empty() && (ops.top() == '*' || ops.top() == '/')) {
