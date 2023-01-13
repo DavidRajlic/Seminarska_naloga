@@ -1,0 +1,4 @@
+C:\Users\andra\source\repos\Calculator - Copy\Calculator\x64\Debug\Calculator.vcxproj.AssemblyReference.cache
+C:\Users\andra\source\repos\Calculator - Copy\Calculator\x64\Debug\Calculator.vcxproj.SuggestedBindingRedirects.cache
+C:\Users\andra\source\repos\Calculator - Copy\Calculator\x64\Debug\Calculator.MyForm.resources
+C:\Users\andra\source\repos\Calculator - Copy\Calculator\x64\Debug\Calculator.vcxproj.GenerateResource.cache
