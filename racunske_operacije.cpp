@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <stack>
 using namespace std;
 
 int sestevanje();
@@ -12,22 +13,82 @@ int izracun_ostanka();
 int potenciranje();
 int korenjenje();
 double calculate_equation(string equation);
+double eval(const std::string& expr) {
+    std::stack<double> nums;
+    std::stack<char> ops;
+
+    for (std::size_t i = 0; i < expr.size(); i++) {
+        char c = expr[i];
+        
+				
+        // ignoriraj presledke 
+        if(c == ' ') continue;
+				// če je število 
+        if (c >= '0' && c <= '9') {
+            std::string num;
+            while (i < expr.size() && (expr[i] >= '0' && expr[i] <= '9'))
+                num += expr[i++];
+            nums.push(std::stod(num));
+            i--;
+        } else if (c == '+' || c == '-' || c == '*' || c == '/') {
+            while (!ops.empty() && (ops.top() == '*' || ops.top() == '/')) {
+                double num1 = nums.top(); nums.pop();
+                double num2 = nums.top(); nums.pop();
+                char op = ops.top(); ops.pop();
+                if (op == '*') nums.push(num1 * num2);
+                else if (op == '/') nums.push(num2 / num1);
+            }
+            ops.push(c);
+        } else if (c == '(') {
+            ops.push(c);
+        } else if (c == ')') {
+            while (ops.top() != '(') {
+                double num1 = nums.top(); nums.pop();
+                double num2 = nums.top(); nums.pop();
+                char op = ops.top(); ops.pop();
+                if (op == '+') nums.push(num1 + num2);
+                else if (op == '-') nums.push(num2 - num1);
+                else if (op == '*') nums.push(num1 * num2);
+                else if (op == '/') nums.push(num2 / num1);
+            }
+            ops.pop();
+        }
+    }
+
+    while (!ops.empty()) {
+        double num1 = nums.top(); nums.pop();
+        double num2 = nums.top(); nums.pop();
+        char op = ops.top(); ops.pop();
+        if (op == '+') nums.push(num1 + num2);
+        else if (op == '-') nums.push(num2 - num1);
+        else if (op == '*') nums.push(num1 * num2);
+        else if (op == '/') nums.push(num2 / num1);
+    }
+
+    return nums.top();
+}
 
 int main () {
 	/*
-		cout << sestevanje() << endl;
+	cout << sestevanje() << endl;
 	cout << odstevanje() << endl;
 	cout << mnozenje() << endl;
 	cout << deljenje() << endl;
 	cout << izracun_ostanka() << endl;
 	cout << potenciranje()  << endl;
 	cout << korenjenje() << endl;
-	*/
-	  string equation;
+	 string equation;
   cout << "Enter an equation: ";
   getline(cin, equation);
   cout << "Result: " << calculate_equation(equation) << endl;
   return 0;
+	
+	*/
+string equation;
+cout << "Vstavi: ";
+
+ getline(cin, equation);
+ cout << eval(equation) << endl;
 	
 }
 
@@ -117,14 +178,15 @@ double calculate_equation(string equation) {
   ss << equation;
   double result;
   ss >> result;
-  char op;
-  while (ss >> op) {
+  char operacija;
+  while (ss >> operacija) {
     double term;
     ss >> term;
-    if (op == '+') result += term;
-    else if (op == '-') result -= term;
-    else if (op == '*') result *= term;
-    else if (op == '/') result /= term;
+		if (operacija == '*') result *= term;
+    else if (operacija == '/') result /= term;
+    else if (operacija == '+') result += term;
+    else if (operacija == '-') result -= term;
+  
   }
   return result;
 }
